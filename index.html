@@ -176,6 +176,16 @@
     .opt.active{ outline: 2px solid var(--indigo) }
     .opt.correct{ background: color-mix(in srgb, #10B981 16%, var(--color-card)); border-color: #10B981 }
     .opt.wrong{ background: color-mix(in srgb, #EF4444 16%, var(--color-card)); border-color: #EF4444 }
+    /* info button inside each option row */
+    .info-btn{
+      margin-left:auto;
+      padding:6px 8px;
+      border:1px solid var(--color-border);
+      background:var(--color-card);
+      border-radius:8px;
+      cursor:pointer;
+    }
+
     .helper{font-size:13px; color:var(--color-muted)}
     .toolbar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
 
@@ -317,7 +327,8 @@
       <div class="toolbar">
         <button id="submit" class="btn primary">Submit</button>
         <button id="skip" class="btn">Skip</button>
-        <button id="next" class="btn" style="margin-left:auto">Next</button>
+        <button id="next" class="btn">Next</button>
+        <button id="reset" class="btn" style="margin-left:auto">Reset</button>
       </div>
 
       <div id="result" class="helper" aria-live="polite" style="min-height:22px"></div>
@@ -459,7 +470,9 @@
         <p class="muted">Made for thoughtful conversations. © 2025</p>
         <div class="social" aria-label="Social links">
           <a class="btn" href="#" aria-label="Twitter">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5.2c-.7.3-1.4.5-2.2.6.8-.5 1.4-1.2 1.7-2- .8.5-1.6.8-2.5 1A4 4 0 0 0 12 8c0 .3 0 .6.1.8A11.4 11.4 0 0 1 3 4.8a4 4 0 0 0 1.2 5.3 3.8 3.8 0 0 1-1.8-.5v.1a4 4 0 0 0 3.2 3.9c-.4.1-.8.1-1.2 0a4 4 0 0 0 3.8 2.8A8 8 0 0 1 3 18.6 11.3 11.3 0 0 0 9.1 20c7.4 0 11.5-6.1 11.5-11.4v-.5c.8-.5 1.4-1.2 1.9-2Z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3 3h3.6l5 6.6L17.7 3H21l-7.2 9.2L21 21h-3.6l-5.2-6.9L6.3 21H3l7.6-9.8L3 3z"/>
+            </svg>
           </a>
           <a class="btn" href="#" aria-label="GitHub">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.6-1.6-1.4-2-1.4-2-1.2-.8.1-.8.1-.8 1.3.1 2 .1 2 .1 1.1 2 3 1.5 3.7 1.2.1-.8.4-1.5.8-1.9-2.6-.3-5.4-1.3-5.4-6a4.6 4.6 0 0 1 1.2-3.3 4.3 4.3 0 0 1 .1-3.2s1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.4 1 .3 2 0 3a4.7 4.7 0 0 1 1.2 3.3c0 4.7-2.8 5.7-5.4 6 .5.4.9 1.2.9 2.4v3.6c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
@@ -524,11 +537,19 @@
        ========================================= */
     (function(){
       const root = document.documentElement;
-      const saved = localStorage.getItem("theme");
-      if(saved){ root.setAttribute("data-theme", saved); }
       const btn = document.getElementById("themeToggle");
-      const set = t => { root.setAttribute("data-theme", t); localStorage.setItem("theme", t); btn.setAttribute("aria-pressed", t==="dark"); };
-      btn.addEventListener("click", ()=> set(root.getAttribute("data-theme")==="dark" ? "light" : "dark"));
+      const preferred = () =>
+        (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      const apply = (t) => {
+        root.setAttribute("data-theme", t);
+        localStorage.setItem("theme", t);
+        btn.setAttribute("aria-pressed", t==="dark");
+        btn.title = t==="dark" ? "Switch to light theme" : "Switch to dark theme";
+      };
+      const saved = localStorage.getItem("theme");
+      apply(saved || preferred());
+      btn.addEventListener("click", ()=> apply(root.getAttribute("data-theme")==="dark" ? "light" : "dark"));
     })();
 
     /* =========================================
@@ -647,7 +668,7 @@
       // ui refs
       const $claim = $("#claim"), $opts = $("#options"), $free = $("#free"), $ans=$("#answer");
       const $score = $("#score"), $streak = $("#streak"), $played = $("#played"), $res=$("#result"), $dom=$("#domain");
-      const $submit = $("#submit"), $submitFree=$("#submitFree"), $skip=$("#skip"), $next=$("#next");
+      const $submit = $("#submit"), $submitFree=$("#submitFree"), $skip=$("#skip"), $next=$("#next"), $reset=$("#reset");
       const $mode = document.querySelectorAll("input[name='mode']");
 
       // helpers
@@ -730,17 +751,29 @@
         if(mode==="mc"){
           $opts.style.display = "grid";
           $free.style.display = "none";
+
+          // FIXED: option rows (no nested buttons)
+          const select = (el,name)=>{
+            Array.from($opts.children).forEach(x=>x.classList.remove("active"));
+            el.classList.add("active"); picked = name;
+          };
           Q.options.forEach((name,i)=>{
-            const el = document.createElement("button");
-            el.className = "opt"; el.type="button"; el.setAttribute("data-letter", String.fromCharCode(65+i));
-            el.innerHTML = `<strong style="min-width:22px">${String.fromCharCode(65+i)}.</strong> <span style="font-weight:700">${name}</span>
-                            <button type="button" class="btn" style="margin-left:auto;padding:6px 8px" aria-label="Definition">i</button>`;
-            el.addEventListener("click",(e)=>{
-              if(e.target.tagName==="BUTTON" && e.target.textContent==="i"){ alert(name + ": " + (DEF[name]||"")); return; }
-              Array.from($opts.children).forEach(x=>x.classList.remove("active"));
-              el.classList.add("active"); picked = name;
+            const wrap = document.createElement("div");
+            wrap.className = "opt";
+            wrap.setAttribute("role","button");
+            wrap.setAttribute("tabindex","0");
+            wrap.dataset.letter = String.fromCharCode(65+i);
+            wrap.innerHTML = `
+              <strong style="min-width:22px">${String.fromCharCode(65+i)}.</strong>
+              <span style="font-weight:700">${name}</span>
+              <button type="button" class="info-btn" aria-label="Definition for ${name}">i</button>`;
+            wrap.addEventListener("click",(e)=>{ if(e.target.closest(".info-btn")) return; select(wrap,name); });
+            wrap.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(wrap,name);} });
+            wrap.querySelector(".info-btn").addEventListener("click",(e)=>{
+              e.stopPropagation();
+              alert(name + ": " + (DEF[name] || "No definition yet."));
             });
-            $opts.appendChild(el);
+            $opts.appendChild(wrap);
           });
         } else {
           $opts.style.display = "none";
@@ -781,6 +814,13 @@
       $submitFree.addEventListener("click", ()=> $submit.click());
       $skip.addEventListener("click", ()=> render(true));
       $next.addEventListener("click", ()=> render());
+
+      // FIXED: Reset button (clears stats + new question)
+      $reset.addEventListener("click", ()=>{
+        S = { score:0, streak:0, played:0, seed:Math.floor(Math.random()*1e9) };
+        localStorage.setItem(storeKey, JSON.stringify(S));
+        render(true);
+      });
 
       // keyboard
       document.addEventListener("keydown",(e)=>{
