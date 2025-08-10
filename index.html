@@ -252,7 +252,6 @@
       <div class="links" role="menubar" aria-label="Site">
         <a href="#trainer" role="menuitem">Practice</a>
         <a href="#features" role="menuitem">Features</a>
-        <a href="#pricing" role="menuitem">Plans</a>
         <a href="#faq" role="menuitem">FAQ</a>
         <button class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle theme">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 18a6 6 0 010-12v12zm0 0a6 6 0 006-6 6 6 0 00-6-6v12z"/></svg>
@@ -339,7 +338,6 @@
   <section id="features" class="wrap features">
     <div class="section-head">
       <h2>Built for clarity</h2>
-      <a class="btn" href="#style">Style guide</a>
     </div>
     <div class="grid grid-3">
       <div class="bullet">
@@ -400,11 +398,6 @@
     </div>
   </section>
 
-  <!-- ========== Pricing / Plans ========== -->
-  <section id="pricing" class="wrap">
-    <div class="section-head">
-      <h2>Plans</h2>
-      <span class="muted">All modes are free. Donate to support hosting.</span>
     </div>
     <div class="grid grid-3 tiers">
       <div class="tier">
@@ -484,7 +477,6 @@
         <ul style="list-style:none; padding:0; margin:0">
           <li><a href="#trainer">Practice</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#pricing">Plans</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
@@ -498,11 +490,6 @@
     </div>
   </footer>
 
-  <!-- ========== Style Guide ========== -->
-  <section id="style" class="wrap">
-    <div class="section-head">
-      <h2>Style guide</h2>
-      <span class="muted">Tokens in use</span>
     </div>
     <div class="grid grid-3">
       <div>
@@ -603,14 +590,115 @@
        ========================================= */
     (function(){
       // Fallacy bank & definitions (short)
-      const FALLACIES = [
-        "ad hominem","straw man","false dilemma","circular reasoning","slippery slope","hasty generalization",
-        "appeal to authority","appeal to emotion","post hoc","correlation/causation","composition/division",
-        "no true Scotsman","begging the question","equivocation","gambler’s fallacy","bandwagon","red herring",
-        "loaded question","genetic fallacy","tu quoque","Texas sharpshooter","appeal to ignorance","special pleading",
-        "appeal to popularity","appeal to tradition","appeal to novelty","appeal to nature","middle ground",
-        "moving the goalposts","false equivalence","sunk cost","anecdotal","burden of proof"
-      ];
+      const FALLACIES = {
+  "ad_hominem": [
+    "ad hominem","adhominem","ad-hominem","ad personam","adpersonam",
+    "personal attack","poisoning the well","name-calling","attacking the person",
+    "circumstantial ad hominem","abusive ad hominem","ad homonym"
+  ],
+  "straw_man": [
+    "straw man","strawman","straw-man","aunt sally","hollow man",
+    "misrepresentation","misstating the argument","weak man"
+  ],
+  "false_dilemma": [
+    "false dilemma","false-dilemma","false dichotomy","false-dichotomy",
+    "either-or fallacy","either or fallacy","black-or-white","black and white",
+    "bifurcation fallacy","excluded middle","false binary","forced choice"
+  ],
+  "circular_reasoning": [
+    "circular reasoning","circular argument","circulus in probando",
+    "assumes what it proves","assuming the conclusion","vicious circle",
+    "begs the question (strict)","question-begging"
+  ],
+  "slippery_slope": [
+    "slippery slope","slippery-slope","thin end of the wedge","thin edge of the wedge",
+    "camel's nose","domino effect (fallacy)","if we allow this then that"
+  ],
+  "hasty_generalization": [
+    "hasty generalization","hasty-generalization","faulty generalization",
+    "overgeneralization","insufficient sample","small sample fallacy",
+    "converse accident","jumping to conclusions","non-representative sample"
+  ],
+  "appeal_to_authority": [
+    "appeal to authority","argument from authority","argumentum ad verecundiam",
+    "ad verecundiam","ipse dixit","false authority","appeal to false authority",
+    "because expert said so"
+  ],
+  "appeal_to_emotion": [
+    "appeal to emotion","emotional appeal","argumentum ad passiones",
+    "playing on emotions","emotive language","emotional manipulation",
+    "appeal to feelings"
+  ],
+  "post_hoc": [
+    "post hoc","post hoc ergo propter hoc","post-hoc","false cause",
+    "questionable cause","after this therefore because of this",
+    "coincidental correlation","superstitious reasoning"
+  ],
+  "correlation_causation": [
+    "correlation vs causation","confusing correlation with causation",
+    "cum hoc ergo propter hoc","cum hoc","correlation implies causation",
+    "spurious correlation","cause-effect confusion"
+  ],
+  "composition_division": [
+    "composition/division","fallacy of composition","composition fallacy",
+    "parts-to-whole","whole-to-parts","fallacy of division","division fallacy",
+    "what’s true of parts is true of whole","what’s true of whole is true of parts"
+  ],
+  "no_true_scotsman": [
+    "no true scotsman","no-true-scotsman","appeal to purity","purity fallacy",
+    "not a real X","real x wouldn’t","scotsman fallacy"
+  ],
+  "begging_the_question": [
+    "begging the question","petitio principii","begs the question (strict)",
+    "assuming the conclusion","circular definition","arguing in a circle"
+  ],
+  "equivocation": [
+    "equivocation","ambiguity fallacy","semantic ambiguity","double meaning",
+    "shifting meaning","wordplay fallacy","weasel words"
+  ],
+  "gamblers_fallacy": [
+    "gambler's fallacy","gamblers fallacy","gambler fallacy",
+    "monte carlo fallacy","law of averages (fallacy)","due for a win",
+    "streak fallacy"
+  ],
+  "bandwagon": [
+    "bandwagon","bandwagon fallacy","appeal to popularity","ad populum",
+    "argumentum ad populum","appeal to majority","everyone’s doing it",
+    "popular = true","social proof fallacy"
+  ],
+  "red_herring": [
+    "red herring","red-herring","distraction","smokescreen","smoke screen",
+    "changing the subject","misdirection","irrelevant point",
+    "irrelevant conclusion","ignoratio elenchi"
+  ],
+  "loaded_question": [
+    "loaded question","complex question","many questions","have you stopped…",
+    "presupposition fallacy","question with a trap","leading question (loaded)"
+  ],
+  "genetic_fallacy": [
+    "genetic fallacy","origin fallacy","appeal to origin","source fallacy",
+    "attacking the source","because of where it came from"
+  ],
+  "tu_quoque": [
+    "tu quoque","tuquoque","to quoque","you too","appeal to hypocrisy",
+    "whataboutism","hypocrisy fallacy"
+  ],
+  "texas_sharpshooter": [
+    "texas sharpshooter","texas-sharpshooter","sharpshooter fallacy",
+    "cherry-picking data","cluster illusion","pattern hunting",
+    "p-hacking (colloq)","selective evidence"
+  ],
+  "appeal_to_ignorance": [
+    "appeal to ignorance","argument from ignorance","ad ignorantiam",
+    "lack of evidence = proof","not proven false so true","ignorance fallacy",
+    "appeal to lack of knowledge"
+  ],
+  "special_pleading": [
+    "special pleading","moving the goalposts","ad hoc rescue",
+    "double standard","exception without justification","no true exception"
+  ]
+}
+;
       const DEF = {
         "ad hominem":"Attacking the person instead of the argument.",
         "straw man":"Misstating an opponent’s view to refute more easily.",
@@ -646,18 +734,180 @@
         "anecdotal":"Personal story as proof.",
         "burden of proof":"Critic must disprove claim."
       };
-      // alias map (normalized)
-      const ALIASES = new Map([
-        ["ad populum","bandwagon"],["appeal to popularity","bandwagon"],["appeal to the people","bandwagon"],
-        ["argument from authority","appeal to authority"],["ad verecundiam","appeal to authority"],
-        ["argument from ignorance","appeal to ignorance"],["ad ignorantiam","appeal to ignorance"],
-        ["ad hom","ad hominem"],["personal attack","ad hominem"],
-        ["black or white","false dilemma"],["false binary","false dilemma"],["either or","false dilemma"],
-        ["post hoc ergo propter hoc","post hoc"],
-        ["whataboutism","tu quoque"],["law of averages","gambler’s fallacy"],
-        ["naturalistic fallacy","appeal to nature"],["apples to oranges","false equivalence"],
-        ["raise the bar","moving the goalposts"],["compromise is truth","middle ground"]
-      ]);
+     // alias map (normalized, rich)
+const ALIAS_GROUPS = {
+  ad_hominem: [
+    "ad hominem","adhominem","ad-hominem","ad personam","adpersonam",
+    "personal attack","poisoning the well","name-calling","attacking the person",
+    "circumstantial ad hominem","abusive ad hominem","ad homonym"
+  ],
+  straw_man: [
+    "straw man","strawman","straw-man","aunt sally","hollow man",
+    "misrepresentation","misstating the argument","weak man"
+  ],
+  false_dilemma: [
+    "false dilemma","false-dilemma","false dichotomy","false-dichotomy",
+    "either-or fallacy","either or fallacy","black-or-white","black and white",
+    "bifurcation fallacy","excluded middle","false binary","forced choice"
+  ],
+  circular_reasoning: [
+    "circular reasoning","circular argument","circulus in probando",
+    "assumes what it proves","assuming the conclusion","vicious circle",
+    "begs the question (strict)","question-begging"
+  ],
+  slippery_slope: [
+    "slippery slope","slippery-slope","thin end of the wedge","thin edge of the wedge",
+    "camel's nose","domino effect (fallacy)","if we allow this then that"
+  ],
+  hasty_generalization: [
+    "hasty generalization","hasty-generalization","faulty generalization",
+    "overgeneralization","insufficient sample","small sample fallacy",
+    "converse accident","jumping to conclusions","non-representative sample"
+  ],
+  appeal_to_authority: [
+    "appeal to authority","argument from authority","argumentum ad verecundiam",
+    "ad verecundiam","ipse dixit","false authority","appeal to false authority",
+    "because expert said so"
+  ],
+  appeal_to_emotion: [
+    "appeal to emotion","emotional appeal","argumentum ad passiones",
+    "playing on emotions","emotive language","emotional manipulation",
+    "appeal to feelings"
+  ],
+  post_hoc: [
+    "post hoc","post hoc ergo propter hoc","post-hoc","false cause",
+    "questionable cause","after this therefore because of this",
+    "coincidental correlation","superstitious reasoning"
+  ],
+  correlation_causation: [
+    "correlation vs causation","confusing correlation with causation",
+    "cum hoc ergo propter hoc","cum hoc","correlation implies causation",
+    "spurious correlation","cause-effect confusion"
+  ],
+  composition_division: [
+    "composition/division","fallacy of composition","composition fallacy",
+    "parts-to-whole","whole-to-parts","fallacy of division","division fallacy",
+    "what’s true of parts is true of whole","what’s true of whole is true of parts"
+  ],
+  no_true_scotsman: [
+    "no true scotsman","no-true-scotsman","appeal to purity","purity fallacy",
+    "not a real x","real x wouldn’t","scotsman fallacy"
+  ],
+  begging_the_question: [
+    "begging the question","petitio principii","begs the question (strict)",
+    "assuming the conclusion","circular definition","arguing in a circle"
+  ],
+  equivocation: [
+    "equivocation","ambiguity fallacy","semantic ambiguity","double meaning",
+    "shifting meaning","wordplay fallacy","weasel words"
+  ],
+  gamblers_fallacy: [
+    "gambler's fallacy","gamblers fallacy","gambler fallacy",
+    "monte carlo fallacy","law of averages (fallacy)","due for a win",
+    "streak fallacy"
+  ],
+  bandwagon: [
+    "bandwagon","bandwagon fallacy","appeal to popularity","ad populum",
+    "argumentum ad populum","appeal to majority","everyone’s doing it",
+    "popular = true","social proof fallacy"
+  ],
+  red_herring: [
+    "red herring","red-herring","distraction","smokescreen","smoke screen",
+    "changing the subject","misdirection","irrelevant point",
+    "irrelevant conclusion","ignoratio elenchi"
+  ],
+  loaded_question: [
+    "loaded question","complex question","many questions","have you stopped",
+    "presupposition fallacy","question with a trap","leading question (loaded)"
+  ],
+  genetic_fallacy: [
+    "genetic fallacy","origin fallacy","appeal to origin","source fallacy",
+    "attacking the source","because of where it came from"
+  ],
+  tu_quoque: [
+    "tu quoque","tuquoque","to quoque","you too","appeal to hypocrisy",
+    "whataboutism","hypocrisy fallacy"
+  ],
+  texas_sharpshooter: [
+    "texas sharpshooter","texas-sharpshooter","sharpshooter fallacy",
+    "cherry-picking data","cluster illusion","pattern hunting",
+    "p-hacking (colloq)","selective evidence"
+  ],
+  appeal_to_ignorance: [
+    "appeal to ignorance","argument from ignorance","ad ignorantiam",
+    "lack of evidence = proof","not proven false so true","ignorance fallacy",
+    "appeal to lack of knowledge"
+  ],
+  special_pleading: [
+    "special pleading","moving the goalposts","ad hoc rescue",
+    "double standard","exception without justification","no true exception"
+  ]
+};
+
+// Map group keys to your canonical option names
+const CANON = {
+  ad_hominem:"ad hominem",
+  straw_man:"straw man",
+  false_dilemma:"false dilemma",
+  circular_reasoning:"circular reasoning",
+  slippery_slope:"slippery slope",
+  hasty_generalization:"hasty generalization",
+  appeal_to_authority:"appeal to authority",
+  appeal_to_emotion:"appeal to emotion",
+  post_hoc:"post hoc",
+  correlation_causation:"correlation/causation",
+  composition_division:"composition/division",
+  no_true_scotsman:"no true Scotsman",
+  begging_the_question:"begging the question",
+  equivocation:"equivocation",
+  gamblers_fallacy:"gambler’s fallacy",
+  bandwagon:"bandwagon",
+  red_herring:"red herring",
+  loaded_question:"loaded question",
+  genetic_fallacy:"genetic fallacy",
+  tu_quoque:"tu quoque",
+  texas_sharpshooter:"Texas sharpshooter",
+  appeal_to_ignorance:"appeal to ignorance",
+  special_pleading:"special pleading"
+};
+
+// loose normalizer: lower, remove spaces/hyphens/apostrophes/periods/underscores
+const normLoose = s => (s||"")
+  .toLowerCase()
+  .normalize("NFKD")
+  .replace(/[\s\-\.'’_]+/g,"")
+  .replace(/[^a-z0-9]/g,"");
+
+// build alias lookup (normalized)
+const ALIASES = new Map();
+for(const [key,list] of Object.entries(ALIAS_GROUPS)){
+  const canon = CANON[key];
+  list.forEach(alias => ALIASES.set(normLoose(alias), canon));
+  // also include the canonical label itself
+  ALIASES.set(normLoose(canon), canon);
+}
+
+// existing edit distance (kept)
+const simRatio = (a,b)=>{
+  a = normLoose(a); b = normLoose(b);
+  if(!a.length || !b.length) return 0;
+  const d = edit(a,b);
+  return 1 - d/Math.max(a.length,b.length);
+};
+
+// NEW resolver: exact alias → fuzzy (≥0.88) within known aliases only
+function resolve(input){
+  const x = normLoose(input);
+  if(!x) return null;
+  if(ALIASES.has(x)) return ALIASES.get(x);
+  let best = {canon:null,score:0};
+  for(const [alias,canon] of ALIASES.entries()){
+    const r = simRatio(x, alias);
+    if(r > best.score) best = {canon, score:r};
+  }
+  return best.score >= 0.88 ? best.canon : null;
+}
+
 
       // state
       const storeKey = "ft_state_v1";
@@ -758,23 +1008,28 @@
             el.classList.add("active"); picked = name;
           };
           Q.options.forEach((name,i)=>{
-            const wrap = document.createElement("div");
-            wrap.className = "opt";
-            wrap.setAttribute("role","button");
-            wrap.setAttribute("tabindex","0");
-            wrap.dataset.letter = String.fromCharCode(65+i);
-            wrap.innerHTML = `
-              <strong style="min-width:22px">${String.fromCharCode(65+i)}.</strong>
-              <span style="font-weight:700">${name}</span>
-              <button type="button" class="info-btn" aria-label="Definition for ${name}">i</button>`;
-            wrap.addEventListener("click",(e)=>{ if(e.target.closest(".info-btn")) return; select(wrap,name); });
-            wrap.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(wrap,name);} });
-            wrap.querySelector(".info-btn").addEventListener("click",(e)=>{
-              e.stopPropagation();
-              alert(name + ": " + (DEF[name] || "No definition yet."));
-            });
-            $opts.appendChild(wrap);
-          });
+  const wrap = document.createElement("div");
+  wrap.className = "opt";
+  wrap.setAttribute("role","button");
+  wrap.setAttribute("tabindex","0");
+  wrap.dataset.letter = String.fromCharCode(65+i);
+  wrap.innerHTML = `
+    <strong style="min-width:22px">${String.fromCharCode(65+i)}.</strong>
+    <span style="font-weight:700">${name}</span>
+    <button type="button" class="info-btn" aria-label="Definition for ${name}">i</button>`;
+  const select = ()=>{
+    Array.from($opts.children).forEach(x=>x.classList.remove("active"));
+    wrap.classList.add("active"); picked = name;
+  };
+  wrap.addEventListener("click",(e)=>{ if(e.target.closest(".info-btn")) return; select(); });
+  wrap.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); select(); } });
+  wrap.querySelector(".info-btn").addEventListener("click",(e)=>{
+    e.stopPropagation();
+    alert(name + ": " + (DEF[name] || "No definition yet."));
+  });
+  $opts.appendChild(wrap);
+});
+
         } else {
           $opts.style.display = "none";
           $free.style.display = "flex";
